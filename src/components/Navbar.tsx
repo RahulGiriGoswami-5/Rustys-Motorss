@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom"
 import { cn } from "@/lib/utils"
 import { Search, Heart, User, ShoppingCart, Menu, X, LogOut, UserCircle } from "lucide-react"
 import { useAuth } from "@/lib/auth"
+import { useCart } from "@/lib/cart"
 
 const navLinks = [
   { label: "Home", href: "/#home" },
@@ -19,6 +20,7 @@ export function Navbar() {
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
   const { user, signOut } = useAuth()
+  const { cartCount } = useCart()
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -80,20 +82,35 @@ export function Navbar() {
 
         {/* Icons */}
         <div className="hidden md:flex items-center gap-5">
-          {[
-            { icon: Search, label: "Search", id: "search-btn" },
-            { icon: Heart, label: "Wishlist", id: "wishlist-btn" },
-            { icon: ShoppingCart, label: "Cart", id: "cart-btn" },
-          ].map(({ icon: Icon, label, id }) => (
-            <button
-              key={id}
-              id={id}
-              aria-label={label}
-              className="p-1.5 rounded-full text-white/70 hover:text-white transition-all duration-200 hover:scale-110 hover:bg-white/10"
-            >
-              <Icon className="size-5" />
-            </button>
-          ))}
+          {/* Search */}
+          <button
+            aria-label="Search"
+            className="p-1.5 rounded-full text-white/70 hover:text-white transition-all duration-200 hover:scale-110 hover:bg-white/10"
+          >
+            <Search className="size-5" />
+          </button>
+
+          {/* Wishlist */}
+          <button
+            aria-label="Wishlist"
+            className="p-1.5 rounded-full text-white/70 hover:text-white transition-all duration-200 hover:scale-110 hover:bg-white/10"
+          >
+            <Heart className="size-5" />
+          </button>
+
+          {/* Cart with badge */}
+          <Link
+            to="/cart"
+            aria-label="Cart"
+            className="relative p-1.5 rounded-full text-white/70 hover:text-white transition-all duration-200 hover:scale-110 hover:bg-white/10"
+          >
+            <ShoppingCart className="size-5" />
+            {cartCount > 0 && (
+              <span className="absolute -top-1 -right-1 size-4 rounded-full bg-white text-foreground text-[10px] font-bold flex items-center justify-center leading-none">
+                {cartCount > 9 ? "9+" : cartCount}
+              </span>
+            )}
+          </Link>
 
           {/* User button with auth dropdown */}
           <div className="relative" ref={dropdownRef}>
@@ -181,11 +198,24 @@ export function Navbar() {
             </li>
           ))}
           <li className="flex items-center gap-4 pt-2 border-t border-white/10">
-            {[Search, Heart, ShoppingCart].map((Icon, i) => (
+            {[Search, Heart].map((Icon, i) => (
               <button key={i} className="text-white/60 hover:text-white transition-colors">
                 <Icon className="size-5" />
               </button>
             ))}
+            {/* Mobile cart link */}
+            <Link
+              to="/cart"
+              className="relative text-white/60 hover:text-white transition-colors"
+              onClick={() => setMobileOpen(false)}
+            >
+              <ShoppingCart className="size-5" />
+              {cartCount > 0 && (
+                <span className="absolute -top-1 -right-1 size-4 rounded-full bg-white text-foreground text-[10px] font-bold flex items-center justify-center leading-none">
+                  {cartCount > 9 ? "9+" : cartCount}
+                </span>
+              )}
+            </Link>
             {user ? (
               <>
                 <Link to="/account" onClick={() => setMobileOpen(false)} className="text-white/60 hover:text-white transition-colors">

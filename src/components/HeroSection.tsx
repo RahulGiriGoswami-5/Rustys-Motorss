@@ -1,4 +1,5 @@
 import { useEffect } from "react"
+import { Link } from "react-router-dom"
 import { ChevronDown } from "lucide-react"
 
 export function HeroSection() {
@@ -68,12 +69,12 @@ export function HeroSection() {
           className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-up"
           style={{ animationDelay: "0.3s" }}
         >
-          <a
-            href="#inventory"
+          <Link
+            to="/inventory"
             className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-transparent text-white font-semibold text-sm tracking-wide rounded-2xl border border-white/50 backdrop-blur-sm transition-all duration-300 hover:bg-white/15 hover:border-white/80 hover:scale-105 hover:shadow-[0_0_28px_rgba(255,255,255,0.25)] active:scale-100"
           >
             Explore Collection
-          </a>
+          </Link>
           <a
             href="#contact"
             className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-transparent text-white font-semibold text-sm tracking-wide rounded-2xl border border-white/50 backdrop-blur-sm transition-all duration-300 hover:bg-white/15 hover:border-white/80 hover:scale-105 hover:shadow-[0_0_28px_rgba(255,255,255,0.25)] active:scale-100"
